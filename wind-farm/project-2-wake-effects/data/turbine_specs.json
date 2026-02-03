@@ -1,0 +1,6 @@
+{
+    "rotor_diameter": 120,
+    "hub_height": 90,
+    "thrust_coefficient": 0.8,
+    "rated_power_kw": 3000
+}
