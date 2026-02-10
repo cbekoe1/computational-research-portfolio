@@ -1,0 +1,2 @@
+Estimated k: 0.3479
+True k: 0.3500

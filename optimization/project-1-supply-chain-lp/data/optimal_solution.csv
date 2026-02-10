@@ -1,0 +1,7 @@
+plant,warehouse,quantity,unit_cost,total_cost
+Plant_A,WH_1,80.0,4,320.0
+Plant_A,WH_2,10.0,6,60.0
+Plant_A,WH_3,0.0,9,0.0
+Plant_B,WH_1,0.0,5,0.0
+Plant_B,WH_2,60.0,4,240.0
+Plant_B,WH_3,60.0,7,420.0
