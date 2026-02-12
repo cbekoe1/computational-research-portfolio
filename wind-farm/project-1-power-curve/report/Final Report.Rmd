@@ -1,0 +1,153 @@
+---
+title: "Wind Turbine Power Curve Simulation"
+author: "Collins Bekoe"
+output:
+  pdf_document:
+    latex_engine: xelatex
+geometry: margin=1in
+---
+
+# Executive Summary
+
+This project simulates the expected power output of a modern utility‑scale wind turbine by combining a **Weibull wind speed distribution** with a **simplified turbine power curve**. By generating thousands of wind speed samples and mapping them through the turbine’s operational characteristics, we obtain a realistic distribution of power production over time.
+
+The results show a **distinctly bimodal pattern**: the turbine spends many hours producing **very low power** (due to sub–cut‑in or post–cut‑out wind speeds) and many hours operating at **rated power**, with fewer hours in intermediate regions. This behavior reflects both the statistical nature of wind resources and the nonlinear structure of turbine power curves.
+
+These findings highlight the importance of accurate wind speed modeling when estimating energy yield, planning wind farm layouts, or evaluating turbine suitability for a specific site. The simulation also provides a foundation for more advanced wind energy studies, including wake modeling, multi‑turbine interactions, and long‑term production forecasting.
+
+---
+
+# 1. Introduction
+
+Wind turbines convert the kinetic energy of moving air into electrical power. The relationship between wind speed and power output is governed by the **turbine power curve**, which specifies how much power the turbine can produce at different wind speeds. Because wind is inherently variable, realistic modeling requires a statistical representation of wind speed rather than a single deterministic value.
+
+In this project, we use a **Weibull distribution**, a standard model in wind resource assessment, to generate thousands of wind speed samples. These samples are then passed through a simplified turbine power curve to estimate the distribution of power output over time. This approach provides insight into how often a turbine operates at low, moderate, or high power levels, and how wind variability translates into energy production variability.
+
+---
+
+# 2. Methodology
+
+## 2.1 Weibull Wind Speed Distribution
+
+Wind speeds are modeled using a Weibull distribution with shape parameter \(k\) and scale parameter \(c\). The probability density function is:
+
+
+
+\[
+f(v; k, c) = \frac{k}{c} \left(\frac{v}{c}\right)^{k-1} e^{-(v/c)^k}
+\]
+
+
+
+This distribution is widely used because it captures the skewness and variability observed in real wind speed measurements. Lower wind speeds occur more frequently, while higher speeds occur less often but contribute disproportionately to energy production.
+
+## 2.2 Turbine Power Curve
+
+A turbine power curve defines how power output changes with wind speed. The simplified curve used here includes:
+
+- **Cut‑in speed**: the turbine begins generating power  
+- **Rated region**: power increases with wind speed  
+- **Rated power plateau**: maximum output is maintained  
+- **Cut‑out speed**: the turbine shuts down for safety  
+
+This nonlinear curve is central to understanding the distribution of power output.
+
+## 2.3 Simulation Pipeline
+
+The simulation proceeds in four steps:
+
+1. Generate a large sample of wind speeds from the Weibull distribution  
+2. Load or define the turbine power curve  
+3. Interpolate power output for each wind speed  
+4. Visualize the power curve and resulting power output distribution  
+
+---
+
+# 3. Results
+
+## 3.1 Turbine Power Curve
+
+```{r powercurve, echo=FALSE, out.width="80%"}
+knitr::include_graphics("../results/power_curve.png")
+```
+
+The turbine power curve shows the expected operational behavior:
+
+- **Zero output** at low wind speeds (below cut‑in)  
+- **Rapid increase** in power as wind speeds enter the efficient operating range  
+- **Flat plateau** at rated power (around 2000 kW)  
+- **Sharp drop to zero** at cut‑out speed  
+
+This curve illustrates why turbines often operate at either very low or very high power levels: the transition region is relatively narrow compared to the full wind speed range.
+
+## 3.2 Power Output Distribution
+
+```{r powerdist, echo=FALSE, out.width="80%"}
+knitr::include_graphics("../results/power_distribution.png")
+```
+
+The histogram of simulated power output reveals several important characteristics:
+
+### **1. Strong peak at 0 kW**
+This corresponds to:
+
+- wind speeds below cut‑in  
+- wind speeds above cut‑out  
+- hours where wind is insufficient to generate meaningful power  
+
+This is typical for many wind sites, where calm periods are common.
+
+### **2. Strong peak at rated power (≈2000 kW)**
+This indicates that:
+
+- the turbine frequently operates in the optimal wind speed range  
+- once rated power is reached, the turbine maintains it over a wide range of wind speeds  
+
+This plateau effect creates a large cluster of hours at maximum output.
+
+### **3. Relatively flat distribution between 200–1800 kW**
+This reflects:
+
+- fewer hours spent in transitional wind speed regions  
+- the combined effect of Weibull‑distributed wind speeds and the nonlinear power curve  
+
+### **4. Bimodal structure**
+The two dominant peaks (0 kW and rated power) illustrate a key property of wind turbines:  
+they often operate either **not at all** or **at full capacity**, with fewer hours in between.
+
+This has practical implications:
+
+- **Grid integration**: variability must be managed with storage or flexible generation  
+- **Energy yield estimation**: rated power hours contribute disproportionately to annual energy production  
+- **Turbine selection**: matching turbine characteristics to site wind conditions is essential  
+
+---
+
+# 4. Conclusion
+
+This simulation demonstrates how wind speed variability and turbine operational characteristics combine to shape the distribution of wind turbine power output. Using a Weibull distribution and a simplified power curve, we generated a realistic representation of turbine performance over thousands of simulated hours.
+
+The results show a **bimodal power output pattern**, driven by:
+
+- frequent low‑wind periods  
+- a wide rated‑power plateau  
+- the statistical properties of the Weibull distribution  
+
+This pattern is consistent with real‑world turbine behavior and highlights the importance of accurate wind resource modeling when estimating annual energy production or evaluating turbine suitability for a given site.
+
+### **Key takeaways**
+
+- Wind turbines spend significant time at **zero output** and **rated output**  
+- Intermediate power levels occur less frequently  
+- The turbine power curve strongly shapes the distribution of energy production  
+- Weibull‑based simulations provide a realistic foundation for wind energy analysis  
+
+### **Future extensions**
+
+- Incorporate real meteorological wind speed data  
+- Compare multiple turbine models and hub heights  
+- Extend to multi‑turbine wind farm simulations  
+- Integrate wake effects and terrain‑dependent flow modeling  
+- Perform annual energy production (AEP) estimation  
+
+This project establishes a solid foundation for more advanced wind energy modeling and supports deeper analysis of wind resource variability and turbine performance.
